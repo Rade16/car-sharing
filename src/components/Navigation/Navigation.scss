@@ -1,0 +1,19 @@
+@use "../../sass/variables" as *;
+.navigation {
+  z-index: 9999999999;
+  position: fixed;
+  width: 310px;
+  height: 60px;
+  background: $black;
+  top: 90vh;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  &__img {
+    cursor: pointer;
+  }
+}
