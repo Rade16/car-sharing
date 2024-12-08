@@ -10,6 +10,7 @@ import CarList from "./screens/CarList/CarList";
 import Profile from "./screens/Profile/Profile";
 import CarMap from "./screens/CarMap/CarMap";
 import CarPage from "./screens/CarPage/CarPage";
+import Navigation from "./components/Navigation/Navigation";
 const router = createBrowserRouter([
   {
     index: true,
