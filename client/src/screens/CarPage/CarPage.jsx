@@ -6,11 +6,16 @@ import landCruiser200 from "../../assets/CarPreview/landCruiser200.png";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import carIcon from "../../assets/carIcon.svg";
+import { useAuth } from "../../context/AuthContext";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const CarPage = () => {
   const { carId } = useParams();
   const [car, setCar] = useState({});
-
+  const { user } = useAuth();
+  if (!user) {
+    return <ErrorPage />;
+  }
   useEffect(() => {
     const fetchCar = async () => {
       try {

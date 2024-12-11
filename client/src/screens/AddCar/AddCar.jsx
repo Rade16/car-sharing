@@ -4,7 +4,13 @@ import "./AddCar.scss";
 import Navigation from "../../components/Navigation/Navigation";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
+import ErrorPage from "../ErrorPage/ErrorPage";
+
 const AddCar = () => {
+  const { user, token } = useAuth();
+  if (!user) {
+    return <ErrorPage />;
+  }
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
@@ -12,8 +18,6 @@ const AddCar = () => {
   const [price, setPrice] = useState("");
   const [positionX, setPositionX] = useState("");
   const [positionY, setPositionY] = useState("");
-
-  const { user, token } = useAuth();
 
   const formData = new FormData();
   formData.append("name", name);

@@ -6,9 +6,16 @@ import axios from "axios";
 import carIcon from "../../assets/carIcon.svg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+
+import ErrorPage from "../ErrorPage/ErrorPage";
+
 const CarMap = () => {
   const [cars, setCars] = useState([]);
-
+  const { user } = useAuth();
+  if (!user) {
+    return <ErrorPage />;
+  }
   useEffect(() => {
     const fetchCars = async () => {
       try {

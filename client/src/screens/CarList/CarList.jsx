@@ -4,7 +4,14 @@ import filter from "../../assets/filter.svg";
 import CarPreview from "../../components/CarPreview/CarPreview";
 import Navigation from "../../components/Navigation/Navigation";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+import ErrorPage from "../ErrorPage/ErrorPage";
+
 const CarList = () => {
+  const { user } = useAuth();
+  if (!user) {
+    return <ErrorPage />;
+  }
   const [cars, setCars] = useState([]);
   useEffect(() => {
     const fetchCars = async () => {

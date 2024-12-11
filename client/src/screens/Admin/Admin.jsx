@@ -4,7 +4,13 @@ import { Link } from "react-router-dom";
 import Navigation from "../../components/Navigation/Navigation";
 import landCruiser200 from "../../assets/CarPreview/landCruiser200.png";
 import add from "../../assets/admin/add.svg";
+import { useAuth } from "../../context/AuthContext";
+import ErrorPage from "../ErrorPage/ErrorPage";
 const Admin = () => {
+  const { user } = useAuth();
+  if (!user) {
+    return <ErrorPage />;
+  }
   return (
     <div className="admin">
       <div className="admin__container">
