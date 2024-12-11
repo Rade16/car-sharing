@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Admin from "../../assets/Navigation/admin.svg";
 const Navigation = () => {
+  const { user } = useAuth();
+  if (!user) {
+    return <div>Загрузка...</div>;
+  }
   const userRole = useAuth().user.role;
   return (
     <div className="navigation">

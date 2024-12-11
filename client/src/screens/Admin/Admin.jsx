@@ -13,14 +13,16 @@ const Admin = () => {
         </div>
         <div className="admin__cars">
           <h1 className="admin__cars-title">Добавить машину</h1>
-          <div className="admin__cars-add">
-            <div className="admin__cars-add-container">
-              <div className="admin__cars-add-info">
-                <img src={add} alt="" className="admin__cars-add-info-img" />
+          <Link to="/addcar">
+            <div className="admin__cars-add">
+              <div className="admin__cars-add-container">
+                <div className="admin__cars-add-info">
+                  <img src={add} alt="" className="admin__cars-add-info-img" />
+                </div>
+                <img src={landCruiser200} className="admin__cars-add-img"></img>
               </div>
-              <img src={landCruiser200} className="admin__cars-add-img"></img>
             </div>
-          </div>
+          </Link>
         </div>
         <Navigation />
       </div>

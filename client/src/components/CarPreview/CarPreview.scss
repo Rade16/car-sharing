@@ -5,6 +5,8 @@
   background-color: $bg-element;
   border-radius: 30px;
   cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   &__container {
     overflow: hidden;
     width: 410px;
@@ -46,6 +48,9 @@
     }
   }
   &__car-img {
+    width: 345px;
+    height: 265px;
+    object-fit: cover;
     position: absolute;
     right: -100px;
     top: -15px;

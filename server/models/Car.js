@@ -25,7 +25,7 @@ const Car = sequelize.define("car", {
   positionY: {
     type: DataTypes.FLOAT,
     allowNull: true,
-  },
+  },  
   licensePlate: {
     type: DataTypes.STRING,
     allowNull: true,

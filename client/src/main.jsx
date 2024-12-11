@@ -17,12 +17,15 @@ import { useAuth } from "./context/AuthContext";
 import axios from "axios";
 import { AuthProvider } from "./context/AuthContext";
 import Admin from "./screens/Admin/Admin";
-
+import AddCar from "./screens/AddCar/AddCar";
 const user = localStorage.getItem("token");
 
 const App = () => {
   const { user, setUser } = useAuth();
 
+  if (!user) {
+    return <div>Загрузка...</div>;
+  }
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -77,6 +80,10 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <Admin />,
+  },
+  {
+    path: "/addcar",
+    element: <AddCar />,
   },
 ]);
 

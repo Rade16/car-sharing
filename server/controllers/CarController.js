@@ -3,8 +3,10 @@ const { User, Car, Favorite } = require("../models/index");
 class CarController {
   async createCar(req, res) {
     try {
-      const { name, brand, price, image, positionX, positionY } = req.body;
+      const { name, brand, price, positionX, positionY, category } = req.body;
+      const image = req.file ? `/uploads/${req.file.filename}` : null;
       const car = await Car.create({
+        category,
         name,
         brand,
         price,
