@@ -39,14 +39,14 @@ const Registration = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
-            type="text"
+            type="email"
             placeholder="Email"
             className="registration__form-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="text"
+            type="password"
             placeholder="Пароль"
             className="registration__form-input"
             value={password}

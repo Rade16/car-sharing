@@ -56,12 +56,12 @@ const CarPage = () => {
                 defaultState={{
                   center: [car.positionX, car.positionY],
                   zoom: 15,
-                }} // Использование состояния zoom
+                }}
                 width={"100%"}
                 height={"300px"}
               >
                 <Placemark
-                  geometry={[car.positionX, car.positionY]} // Координаты автомобиля
+                  geometry={[car.positionX, car.positionY]}
                   properties={{
                     hintContent: `Машина: ${car.name}`,
                     balloonContent: `

@@ -78,7 +78,7 @@ class AuthController {
           username: user.username,
           email: user.email,
           avatar: user.avatar,
-          role: user.role, // Роль передаётся сразу
+          role: user.role,
         },
       });
     } catch (e) {

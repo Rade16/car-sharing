@@ -39,7 +39,7 @@ const CarMap = () => {
           defaultState={{
             center: [55.617246, 37.727472],
             zoom: 15,
-          }} // Использование состояния zoom
+          }}
           width={"100%"}
           height={"100vh"}
         >
@@ -49,7 +49,7 @@ const CarMap = () => {
               (
                 <Placemark
                   key={car.id}
-                  geometry={[car.positionX, car.positionY]} // Координаты автомобиля
+                  geometry={[car.positionX, car.positionY]}
                   properties={{
                     hintContent: `Машина: ${car.name}`,
                     balloonContent: `
