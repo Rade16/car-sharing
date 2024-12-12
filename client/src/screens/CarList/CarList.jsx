@@ -12,7 +12,11 @@ const CarList = () => {
   if (!user) {
     return <ErrorPage />;
   }
+
   const [cars, setCars] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredCars, setFilteredCars] = useState([]);
+
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -29,6 +33,13 @@ const CarList = () => {
     fetchCars();
   }, []);
 
+  useEffect(() => {
+    const filtered = cars.filter((car) =>
+      car.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredCars(filtered);
+  }, [searchQuery, cars]);
+
   return (
     <div className="carList">
       <div className="carList__container">
@@ -38,13 +49,15 @@ const CarList = () => {
             type="text"
             className="carList__search-input"
             placeholder="Поиск автомобилей"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <div className="carList__search-filters">
             <img src={filter} alt="" />
           </div>
         </label>
         <div className="carList__list ">
-          {cars.map((car) => (
+          {filteredCars.map((car) => (
             <CarPreview
               key={car.id}
               id={car.id}

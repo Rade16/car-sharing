@@ -4,7 +4,6 @@ const RentalController = require("../controllers/rentalController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.post("/rental", RentalController.createRental);
-router.get("/users/:userId/rentals", RentalController.getRentalsByUser);
-router.put("/:id/status", RentalController.updateRentalStatus);
+router.post("/rental/:id/complete", RentalController.completeRental); // Завершить аренду
 
 module.exports = router;

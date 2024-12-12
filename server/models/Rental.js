@@ -4,20 +4,25 @@ const sequelize = require("../db");
 const Rental = sequelize.define("rental", {
   startDate: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: DataTypes.NOW,
   },
   endDate: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   totalPrice: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  pricePerMinute: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: "active", // active, completed, cancelled
+    allowNull: true,
+    defaultValue: "active",
   },
 });
 

@@ -125,7 +125,7 @@ const AddCar = () => {
               placeholder="Toyota"
               value={brand}
               required
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setBrand(e.target.value)}
             >
               <option value="">Выберите категорию</option>
               {categories.brand.map((brand, index) => (

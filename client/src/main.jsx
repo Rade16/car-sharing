@@ -18,6 +18,7 @@ import axios from "axios";
 import { AuthProvider } from "./context/AuthContext";
 import Admin from "./screens/Admin/Admin";
 import AddCar from "./screens/AddCar/AddCar";
+import ProfileChange from "./screens/ProfileChange/ProfileChange";
 const user = localStorage.getItem("token");
 
 const App = () => {
@@ -81,6 +82,11 @@ const router = createBrowserRouter([
   {
     path: "/addcar",
     element: <AddCar />,
+  },
+
+  {
+    path: "/profileChange",
+    element: <ProfileChange />,
   },
 ]);
 

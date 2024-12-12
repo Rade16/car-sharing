@@ -87,6 +87,24 @@ class AuthController {
     }
   }
 
+  async updateUser(req, res) {
+    try {
+      const { username, email } = req.body;
+
+      const avatar = req.file ? `/uploads/${req.file.filename}` : null;
+      const user = await User.findOne({ where: { id: req.params.id } });
+      if (!user) {
+        return res.status(404).json({ message: "Пользователь не найден" });
+      }
+      await user.update({ username, email, avatar });
+      return res.json({ message: "Пользователь успешно обновлен" });
+    } catch (e) {
+      console.log(e);
+      return res
+        .status(400)
+        .json({ message: "Ошибка при обновлении пользователя" });
+    }
+  }
   async auth(req, res) {
     try {
       console.log("Проверка authMiddleware:", req.user);

@@ -10,12 +10,15 @@ import { useAuth } from "../../context/AuthContext";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 const CarPage = () => {
-  const { carId } = useParams();
-  const [car, setCar] = useState({});
   const { user } = useAuth();
   if (!user) {
     return <ErrorPage />;
   }
+
+  const [rentalStarted, setRentalStarted] = useState(false);
+  const [rentalId, setRentalId] = useState(null);
+  const { carId } = useParams();
+  const [car, setCar] = useState({});
   useEffect(() => {
     const fetchCar = async () => {
       try {
@@ -31,6 +34,51 @@ const CarPage = () => {
 
     fetchCar();
   }, []);
+
+  console.log(car.id);
+  console.log(car.price);
+  console.log(user.id);
+
+  const startRental = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/rentals/rental",
+        {
+          userId: user.id,
+          carId: car.id,
+          pricePerMinute: car.price,
+        }
+      );
+
+      setRentalId(response.data.id);
+      setRentalStarted(true);
+      alert("Аренда успешно началась!");
+      console.log("Rental started:", response.data);
+    } catch (error) {
+      console.error("Error starting rental:", error);
+    }
+  };
+
+  const completeRental = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/rentals/rental/${rentalId}/complete`,
+        {
+          userId: user.id,
+        }
+      );
+
+      console.log("Rental completed:", response.data);
+      setRentalStarted(false);
+      alert(
+        `Аренда успешно завершена. Цена составила: ${response.data.totalPrice}р.`
+      );
+    } catch (error) {
+      console.error("Ошибка при завершении аренды:", error.response?.data);
+      alert("Ошибка при завершении аренды.");
+    }
+  };
+
   return (
     <div className="CarPage">
       <div className="CarPage__header">
@@ -80,7 +128,21 @@ const CarPage = () => {
               </Map>
             </YMaps>
           </div>
-          <div className="CarPage__main-button">Арендовать</div>
+
+          {rentalStarted ? (
+            <>
+              <button
+                className="CarPage__main-button-complete"
+                onClick={completeRental}
+              >
+                Завершить аренду
+              </button>
+            </>
+          ) : (
+            <div className="CarPage__main-button" onClick={startRental}>
+              Арендовать
+            </div>
+          )}
         </div>
       </div>
 
