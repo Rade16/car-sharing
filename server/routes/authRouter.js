@@ -7,8 +7,12 @@ const upload = require("../middleware/multer");
 
 router.post(
   "/registration",
-  check("username").isLength({ min: 4, max: 25 }),
-  check("password").isLength({ min: 4, max: 25 }),
+  check("username")
+    .isLength({ min: 4, max: 25 })
+    .withMessage("Имя пользователя должно содержать от 4 до 25 символов."),
+  check("password")
+    .isLength({ min: 4, max: 25 })
+    .withMessage("Пароль должен содержать от 4 до 25 символов."),
   controller.registration
 );
 router.post("/login", controller.login);

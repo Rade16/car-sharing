@@ -15,9 +15,10 @@ class AuthController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({ message: "Ошибка при регистрации", errors });
+        return res.status(400).json({
+          message: "Ошибка при регистрации",
+          errors: errors.array().map((error) => error.msg),
+        });
       }
 
       const { username, password, email, avatar, role } = req.body;
@@ -96,6 +97,7 @@ class AuthController {
       if (!user) {
         return res.status(404).json({ message: "Пользователь не найден" });
       }
+
       await user.update({ username, email, avatar });
       return res.json({ message: "Пользователь успешно обновлен" });
     } catch (e) {
