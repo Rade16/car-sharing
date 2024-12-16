@@ -22,7 +22,7 @@ class AuthController {
       }
 
       const { username, password, email, avatar, role } = req.body;
-
+      const normalizedEmail = email.toLowerCase();
       const candidateByUsername = await User.findOne({ where: { username } });
       if (candidateByUsername) {
         return res
@@ -30,7 +30,9 @@ class AuthController {
           .json({ message: "Пользователь с таким именем уже существует" });
       }
 
-      const candidateByEmail = await User.findOne({ where: { email } });
+      const candidateByEmail = await User.findOne({
+        where: { email: normalizedEmail },
+      });
       if (candidateByEmail) {
         return res
           .status(400)
@@ -42,7 +44,7 @@ class AuthController {
       const user = await User.create({
         username,
         password: hashPassword,
-        email,
+        email: normalizedEmail,
         avatar,
         role,
       });
@@ -59,7 +61,8 @@ class AuthController {
     try {
       const { email, password } = req.body;
 
-      const user = await User.findOne({ where: { email } });
+      const normalizedEmail = email.toLowerCase();
+      const user = await User.findOne({ where: { email: normalizedEmail } });
       if (!user) {
         return res
           .status(400)
