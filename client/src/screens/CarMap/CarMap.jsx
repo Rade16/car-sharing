@@ -11,11 +11,12 @@ import { useAuth } from "../../context/AuthContext";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 const CarMap = () => {
-  const [cars, setCars] = useState([]);
   const { user } = useAuth();
   if (!user) {
     return <ErrorPage />;
   }
+  const [cars, setCars] = useState([]);
+
   useEffect(() => {
     const fetchCars = async () => {
       try {

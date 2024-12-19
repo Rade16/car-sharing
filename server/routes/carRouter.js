@@ -9,5 +9,6 @@ router.post("/create", upload.single("image"), controller.createCar);
 router.get("/all-cars", controller.getAllCars);
 
 router.get("/car/:id", controller.getCarById);
+router.put("/car/:id/geo", controller.updateGeo);
 
 module.exports = router;

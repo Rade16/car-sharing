@@ -1,5 +1,6 @@
 @use "../../sass/variables" as *;
 .carList {
+  padding-bottom: 100px;
   width: 100%;
   height: 100vh;
   background-color: $bg;
@@ -45,6 +46,20 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+    }
+  }
+
+  &__currentRental {
+    margin-top: 10px;
+    padding: 30px 0;
+
+    border-bottom: 3px solid #bbbbbb;
+    &-title {
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 35px;
+      text-align: center;
+      color: #000000;
     }
   }
   &__list {

@@ -1,0 +1,66 @@
+@use "../../sass/variables" as *;
+.rentalCar {
+  width: 410px;
+
+  background-color: #caffda;
+  border-radius: 30px;
+  cursor: pointer;
+  overflow: hidden;
+
+  &__container {
+    overflow: hidden;
+    width: 410px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    position: relative;
+  }
+  &__car-info {
+    padding: 20px 20px 20px 30px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &-title {
+      font-weight: 500;
+      font-size: 24px;
+    }
+    &-name {
+      font-weight: 600;
+      font-size: 20px;
+    }
+    &-price {
+      font-size: 14px;
+      margin-top: 5px;
+      font-weight: 500;
+    }
+    &-finalPrice {
+      color: $black;
+      font-size: 14px;
+      &-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 5px;
+      }
+    }
+    &-date {
+      width: 100px;
+      word-wrap: break-word;
+      font-size: 14px;
+      &-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 5px;
+      }
+    }
+  }
+  &__car-img {
+    width: 345px;
+    height: 265px;
+    object-fit: cover;
+    position: absolute;
+    right: -100px;
+    top: -15px;
+  }
+}

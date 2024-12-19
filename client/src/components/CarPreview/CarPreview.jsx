@@ -12,6 +12,7 @@ const CarPreview = (obj) => {
               <h3 className="carPreview__car-info-title">{obj.name}</h3>
               <p className="carPreview__car-info-name">{obj.brand}</p>
               <p className="carPreview__car-info-price">{obj.price}р / мин</p>
+
             </div>
             <button className="carPreview__car-info-button">Арендовать</button>
           </div>

@@ -7,6 +7,20 @@ class RentalController {
       if (!userId || !carId || !pricePerMinute) {
         return res.status(400).json({ error: "Missing required fields" });
       }
+      const activeRental = await Rental.findOne({
+        where: {
+          userId,
+          status: "active",
+        },
+      });
+
+      // Если активная аренда найдена, не разрешаем новую аренду
+      if (activeRental) {
+        return res
+          .status(400)
+          .json({ error: "У вас уже есть активная аренда." });
+      }
+
       const rental = await Rental.create({
         userId,
         carId,
@@ -53,11 +67,32 @@ class RentalController {
       const { userId } = req.params;
       const rentals = await Rental.findAll({
         where: { userId },
-        include: [Car],
+        include: {
+          model: Car,
+        },
       });
       res.json(rentals);
     } catch (error) {
       res.status(500).json({ error: "Error fetching rentals" });
+    }
+  }
+
+  async getActiveRental(req, res) {
+    try {
+      const { id } = req.params;
+
+      const activeRental = await Rental.findOne({
+        where: { userId: id, status: "active" },
+        include: {
+          model: Car,
+        },
+      });
+      if (!activeRental) {
+        return res.status(404).json({ message: "Активная аренда не найдена" });
+      }
+      res.json(activeRental);
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching active rental" });
     }
   }
 }

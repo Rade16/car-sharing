@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./CarPage.scss";
 import Navigation from "../../components/Navigation/Navigation";
-import { YMaps, Map, RouteButton, Placemark } from "@pbe/react-yandex-maps";
-import landCruiser200 from "../../assets/CarPreview/landCruiser200.png";
+import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import carIcon from "../../assets/carIcon.svg";
 import { useAuth } from "../../context/AuthContext";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import { use } from "react";
 
 const CarPage = () => {
   const { user } = useAuth();
@@ -19,13 +19,40 @@ const CarPage = () => {
   const [rentalId, setRentalId] = useState(null);
   const { carId } = useParams();
   const [car, setCar] = useState({});
+  const [positionX, setPositionX] = useState("");
+  const [positionY, setPositionY] = useState("");
+  const [coordinatesEntered, setCoordinatesEntered] = useState(false);
+
+  useEffect(() => {
+    const fetchIsRental = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/rentals/current-rental/${user.id}`
+        );
+
+        if (response.data && response.data.car.id == carId) {
+          setRentalStarted(true);
+          setRentalId(response.data.id); // Устанавливаем rentalId только если аренда активна
+        } else {
+          setRentalStarted(false); // Если аренда не активна, сбрасываем состояние
+          setRentalId(null); // Обнуляем rentalId, если аренда не активна
+        }
+      } catch (error) {
+        console.error("Error checking isRental:", error);
+        setRentalStarted(false); // Обнуляем, если произошла ошибка
+        setRentalId(null); // Обнуляем rentalId при ошибке
+      }
+    };
+
+    fetchIsRental();
+  }, [user.id, carId]);
+
   useEffect(() => {
     const fetchCar = async () => {
       try {
         const response = await axios.get(
           `http://localhost:5000/api/cars/car/${carId}`
         );
-        console.log(response.data);
         setCar(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке автомобиля:", error);
@@ -33,11 +60,7 @@ const CarPage = () => {
     };
 
     fetchCar();
-  }, []);
-
-  console.log(car.id);
-  console.log(car.price);
-  console.log(user.id);
+  }, [carId, rentalStarted]);
 
   const startRental = async () => {
     try {
@@ -53,14 +76,25 @@ const CarPage = () => {
       setRentalId(response.data.id);
       setRentalStarted(true);
       alert("Аренда успешно началась!");
-      console.log("Rental started:", response.data);
     } catch (error) {
       console.error("Error starting rental:", error);
     }
   };
 
   const completeRental = async () => {
+    if (!coordinatesEntered) {
+      alert("Пожалуйста, введите координаты перед завершением аренды.");
+      return;
+    }
+
     try {
+      // Сначала обновим геопозицию
+      await axios.put(`http://localhost:5000/api/cars/car/${carId}/geo`, {
+        positionX,
+        positionY,
+      });
+
+      // Завершаем аренду
       const response = await axios.post(
         `http://localhost:5000/api/rentals/rental/${rentalId}/complete`,
         {
@@ -68,7 +102,6 @@ const CarPage = () => {
         }
       );
 
-      console.log("Rental completed:", response.data);
       setRentalStarted(false);
       alert(
         `Аренда успешно завершена. Цена составила: ${response.data.totalPrice}р.`
@@ -79,12 +112,20 @@ const CarPage = () => {
     }
   };
 
+  const handleCoordinatesChange = () => {
+    if (positionX && positionY != null) {
+      setCoordinatesEntered(true);
+    } else {
+      setCoordinatesEntered(false);
+    }
+  };
+
   return (
     <div className="CarPage">
       <div className="CarPage__header">
         <img
           src={`http://localhost:5000${car.image}`}
-          alt=""
+          alt="Car"
           className="CarPage__header-img"
         />
       </div>
@@ -94,6 +135,7 @@ const CarPage = () => {
             <p className="CarPage__main-car-title">{car.name}</p>
             <p className="CarPage__main-car-name">{car.brand}</p>
           </div>
+
           <div className="CarPage__main-info">
             <p className="CarPage__main-info-title">Цена</p>
             <p className="CarPage__main-info-price">{car.price}р / мин</p>
@@ -128,16 +170,44 @@ const CarPage = () => {
               </Map>
             </YMaps>
           </div>
-
+          {rentalStarted && (
+            <div className="CarPage__main-newPosition">
+              <p className="CarPage__main-newPosition-title">
+                Введите текущие координаты для завершения:
+              </p>
+              <input
+                className="CarPage__main-newPosition-input"
+                placeholder="x"
+                value={positionX}
+                onChange={(e) => {
+                  setPositionX(e.target.value);
+                  console.log(positionX);
+                  handleCoordinatesChange();
+                }}
+                required
+              />
+              <input
+                className="CarPage__main-newPosition-input"
+                placeholder="y"
+                value={positionY}
+                onChange={(e) => {
+                  console.log(positionY);
+                  setPositionY(e.target.value);
+                  handleCoordinatesChange();
+                }}
+                required
+              />
+            </div>
+          )}
           {rentalStarted ? (
-            <>
-              <button
-                className="CarPage__main-button-complete"
-                onClick={completeRental}
-              >
-                Завершить аренду
-              </button>
-            </>
+            <button
+              className="CarPage__main-button-complete"
+              type="button"
+              onClick={completeRental}
+              disabled={!coordinatesEntered}
+            >
+              Завершить аренду
+            </button>
           ) : (
             <div className="CarPage__main-button" onClick={startRental}>
               Арендовать

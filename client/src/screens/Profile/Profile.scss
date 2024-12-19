@@ -77,5 +77,19 @@
       cursor: pointer;
       background: #f6f6f6;
     }
+    &-rentals {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-radius: 30px;
+      // background: #c9c9c9;
+      height: 400px;
+      overflow: scroll;
+      overflow-x: hidden;
+      &-title {
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
   }
 }
